@@ -3,9 +3,11 @@
 class ticket{
 	public $total=0;
 	public $pagado=false;
+	public $pufo=0;
 
 	function Suma($cantidad){
-		$this->total=$this->total+$cantidad;
+		$this->total=number_format($this->total+$cantidad,2);
+		$this->pufo=number_format($this->pufo+$cantidad,2);
 	}
 	function Imprimir(){
 		echo "Total acumulado: $this->total<br>";
@@ -13,12 +15,20 @@ class ticket{
 			echo "Pagado: SI<br>";
 		}
 		else{
-			echo "Pagado: NO<br>";
+			echo "Pagado: NO, faltan $this->pufo<br>";
 		}
 	}
 	
-	function Pagar(){
-		$this->pagado=true;
+	function Pagar($cantidad){
+		$this->pufo=number_format($this->pufo-$cantidad,2);
+		if($this->pufo==0){
+			$this->pagado=true;
+		}
+	}
+
+	function Restar($cantidad){
+		$this->total=number_format($this->total-$cantidad,2);
+		$this->pufo=number_format($this->pufo-$cantidad,2);
 	}
 }
 
@@ -28,7 +38,10 @@ $objTick->Suma(32);
 $objTick->Imprimir();
 $objTick->Suma(21.20);
 $objTick->Imprimir();
-$objTick->Pagar();
+$objTick->Restar(32);
+$objTick->Pagar(40);
+$objTick->Imprimir();
+$objTick->Pagar(1.2);
 $objTick->Imprimir();
 
 ?>
